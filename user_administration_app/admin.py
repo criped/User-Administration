@@ -113,3 +113,4 @@ admin.site.register(BankAccount, BankAccountAdmin)
 admin.site.register(MyUser, UserAdmin)
 
 admin.site.disable_action('delete_selected')
+admin.site.login_template = 'custom_login.html'

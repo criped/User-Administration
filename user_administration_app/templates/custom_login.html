@@ -1,0 +1,6 @@
+{% extends "admin/login.html" %}
+
+{% block content %}
+    {{ block.super }}
+    <a href="/soc/login/google-oauth2/?next=/"> Sign in with Google+</a>
+{% endblock %}
