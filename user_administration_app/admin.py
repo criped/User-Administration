@@ -39,11 +39,11 @@ class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         try:
-            self.fields['iban'] = forms.CharField(label='IBAN', required=True,
+            self.fields['iban'] = forms.CharField(label=LABEL_IBAN, required=True,
                                                   initial=self.instance.bankaccount_set.first().iban
                                                   )
         except AttributeError:
-            self.fields['iban'] = forms.CharField(label='IBAN', required=True)
+            self.fields['iban'] = forms.CharField(label=LABEL_IBAN, required=True)
 
 
 class UserAdmin(admin.ModelAdmin):
