@@ -16,7 +16,7 @@ class UserForm(forms.ModelForm):
         fields = ('firstname', 'lastname', 'iban',)
 
     def clean_iban(self):
-        # Check that the iban is shorter than 34
+        # Checks that the iban is shorter than 34
         iban = self.cleaned_data.get('iban')
         if len(iban) >= 34:
             raise forms.ValidationError(ERR_IBAN_TOO_LONG)
@@ -74,6 +74,15 @@ class UserAdmin(admin.ModelAdmin):
             obj.creator = request.user
         super().save_model(request, obj, form, change)
 
+    def has_add_permission(self, request, obj=None):
+        return obj is None or request.user.is_staff
+
+    def has_change_permission(self, request, obj=None):
+        return obj is None or obj.creator == request.user
+
+    def has_delete_permission(self, request, obj=None):
+        return obj is None or obj.creator == request.user
+
 
 class BankAccountAdmin(admin.ModelAdmin):
     list_display = ('iban', 'owner')
@@ -81,3 +90,5 @@ class BankAccountAdmin(admin.ModelAdmin):
 
 admin.site.register(BankAccount, BankAccountAdmin)
 admin.site.register(MyUser, UserAdmin)
+
+admin.site.disable_action('delete_selected')
