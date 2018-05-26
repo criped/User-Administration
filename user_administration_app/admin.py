@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django import forms
+from django.utils.html import format_html
 
 from user_administration_app.constants import LABEL_IBAN, ERR_IBAN_TOO_LONG
 from user_administration_app.models import BankAccount, MyUser
@@ -49,13 +50,8 @@ class UserAdmin(admin.ModelAdmin):
     # The forms to add and change user instances
     form = UserForm
 
-    list_display = ('firstname', 'lastname', 'bank_account',)
-
-    def bank_account(self, instance):
-        try:
-            return instance.bankaccount_set.first().iban
-        except BankAccount.DoesNotExist:
-            return "-"
+    list_display = ('fullname_link', 'bank_account',)
+    list_display_links = None  # The field displaying the link is given by fullname_link()
 
     fieldsets = (
         ('Personal info', {'fields': ('firstname', 'lastname',)}),
@@ -65,6 +61,31 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('firstname', 'lastname', 'bank_account')
     ordering = ('firstname',)
     filter_horizontal = ()
+
+    editable_objs = []
+
+    def bank_account(self, instance):
+        try:
+            return instance.bankaccount_set.first().iban
+        except BankAccount.DoesNotExist:
+            return "-"
+
+    def fullname_link(self, obj):
+        if obj in self.editable_objs:
+            return format_html("<a href='{id}'>{firstname} {lastname}</a>",
+                               id=obj.id, firstname=obj.firstname,
+                               lastname=obj.lastname
+                               )
+        else:
+            return format_html("{firstname} {lastname}",
+                               id=obj.id, firstname=obj.firstname,
+                               lastname=obj.lastname
+                               )
+
+    def get_queryset(self, request):
+        # Stores all the objects that the logged in User has created
+        self.editable_objs = MyUser.objects.filter(creator=request.user)
+        return super(UserAdmin, self).get_queryset(request)
 
     def save_model(self, request, obj, form, change):
         """It sets the user's creator to the logged user if the user is being created.
