@@ -8,7 +8,7 @@ class MyUser(models.Model):
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='creator')
 
     def __str__(self):
-        return "{}".format(self.user, self.creator)
+        return "{0} {1}".format(self.firstname, self.lastname)
 
     class Meta:
         ordering = ('firstname',)
@@ -16,7 +16,7 @@ class MyUser(models.Model):
 
 class BankAccount(models.Model):
     iban = models.CharField(max_length=34)  # IBAN max-length is 34, according to Wikipedia.
-    owner = models.ForeignKey(MyUser, on_delete=models.SET_NULL)  # We assume any user can have several bank accounts
+    owner = models.ForeignKey(MyUser, null=True, on_delete=models.SET_NULL)  # We assume any user can have several bank accounts
 
     def __str__(self):
         return self.iban
