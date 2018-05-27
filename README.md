@@ -26,25 +26,25 @@ sudo docker-compose run web python manage.py createsuperuser
 ```bash
 sudo docker-compose up
 ```
-It is now available on localhost:8000. To stop it: Ctrl+C or, more elegantly: 
+It is now available on localhost:8000. Do not use 127.0.0.1:8000 as it has troubles with Google+ authentication. To stop the servers: Ctrl+C or, more elegantly:
 ```bash
 sudo docker-compose down
 ```
-So far, we have a superuser to manage all the ins and outs of the app. The rest of users logging via Google+ does not have any permissions. 
-Head to Administrators Configuration section to continue.  
+So far, we have a superuser to manage all the ins and outs of the app. The rest of users logged via Google+ does not have any permissions.
 
 ### Administrators Configuration
 
 Let’s now create a Group for the Administrators and grant it the permissions we want them to have.
 
-- Log in using the superuser account and, once on the main page, click on Group. Let’s call it Administrators.
+- Log in using the superuser account and, once on the main page, click on Groups (in Authentication and Authorization section). Let’s call it Administrators.
 - Grant add, edit and delete permissions on “My User” table, as shown below.
+![alt text]( "Granting permissions for the Administrators Group")
 - Save it and go back to the main page. 
 
-Now, we just need to include the administrators users in the Administrators group. To do so, go to the main page, click on User. You will find all the existing users currently and edit them by pressing on their username.
+Now, we just need to include the administrators users in the Administrators group. To do so, go to the main page, click on User (in Authentication and Authorization section). You will find all the existing users currently and edit them by pressing on their username.
 
 Note that you need to have previously logged in with your google account to find your google user.
 
-After including the administrators in the Administrator group, they will be able to manage users of “My User” table.  
+After including the administrators in the Administrator group, they will be able to manage users for the "User_Administration_App".
 
 
