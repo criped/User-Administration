@@ -1,7 +1,11 @@
 
 ## User Administration
 
-This is a Django app to manage users and their bank accounts. It is a completely based on the Django Admin.
+This is a Django app to manage users and their bank accounts. It is a completely based on the Django Admin. It implements the following customisations:
+- Google+ authentication.
+- Custom Forms (IBAN is validated by using the third party package validators).
+- Custom List View. Displays users attributes and their bank account IBAN.
+- Custom Permissions. A administrator can only edit the users it created, not having links for those that it cannot edit on the list view.
 
 ### Quick Setup
 1. Open a terminal and clone the repository 
@@ -41,9 +45,9 @@ Let’s now create a Group for the Administrators and grant it the permissions w
 ![alt text](https://raw.githubusercontent.com/criped/User-Administration/documentation/docs/images/granting_perms.png "Granting permissions for the Administrators Group")
 - Save it and go back to the main page.
 
-Now, we just need to include the administrators users in the Administrators group. To do so, go to the main page, click on User (in Authentication and Authorization section). You will find all the existing users currently and edit them by pressing on their username.
+Now, we just have to include the administrators users in the Administrators group. To do so, go to the main page, click on User (in Authentication and Authorization section). You will find all the existing users currently and edit them by pressing on their username.
 
-Note that you need to have previously logged in with your google account to find your google user.
+Note that you need to have previously logged in with your google account to find the google user. So if you do not find it, please logout the superuser session and login via Google+. You will find the google user when you log in with the superuser again.
 
 After including the administrators in the Administrator group, they will be able to manage users for the "User_Administration_App".
 
