@@ -2,8 +2,10 @@ from django.contrib import admin
 from django import forms
 from django.utils.html import format_html
 
-from user_administration_app.constants import LABEL_IBAN, ERR_IBAN_TOO_LONG
+from user_administration_app.constants import LABEL_IBAN, ERR_IBAN_TOO_LONG, LABEL_PERSONAL_INFO, \
+    LABEL_BANK_ACCOUNT_INFO
 from user_administration_app.models import BankAccount, MyUser
+from validators import iban as valid_iban
 
 
 class UserForm(forms.ModelForm):
@@ -17,11 +19,11 @@ class UserForm(forms.ModelForm):
         fields = ('firstname', 'lastname', 'iban',)
 
     def clean_iban(self):
-        # Checks that the iban is shorter than 34
-        iban = self.cleaned_data.get('iban')
-        if len(iban) >= 34:
+        input_iban = self.cleaned_data.get('iban')
+        if valid_iban(input_iban):
+            return input_iban
+        else:
             raise forms.ValidationError(ERR_IBAN_TOO_LONG)
-        return iban
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -33,7 +35,6 @@ class UserForm(forms.ModelForm):
                       'iban': self.cleaned_data.get('iban')
                       }
         )
-
         return user
 
     def __init__(self, *args, **kwargs):
@@ -54,8 +55,8 @@ class UserAdmin(admin.ModelAdmin):
     list_display_links = None  # The field displaying the link is given by fullname_link()
 
     fieldsets = (
-        ('Personal info', {'fields': ('firstname', 'lastname',)}),
-        ('Bank Account info', {'fields': ('iban',)}),
+        (LABEL_PERSONAL_INFO, {'fields': ('firstname', 'lastname',)}),
+        (LABEL_BANK_ACCOUNT_INFO, {'fields': ('iban',)}),
     )
 
     search_fields = ('firstname', 'lastname', 'bank_account')
@@ -64,9 +65,9 @@ class UserAdmin(admin.ModelAdmin):
 
     editable_objs = []
 
-    def bank_account(self, instance):
+    def bank_account(self, obj):
         try:
-            return instance.bankaccount_set.first().iban
+            return obj.bankaccount_set.first().iban
         except BankAccount.DoesNotExist:
             return "-"
 
