@@ -2,5 +2,5 @@
 
 {% block content %}
     {{ block.super }}
-    <a href="/soc/login/google-oauth2/?next=/"> Sign in with Google+</a>
+    <a href="{% url 'social:begin' 'google-oauth2' %}"> Sign in with Google+</a>
 {% endblock %}
