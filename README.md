@@ -1,7 +1,7 @@
 
 ## User Administration
 
-This is a Django app to manage users and their bank accounts. It is a completely based on the Django Admin. It implements the following customisations:
+This is a Django app to manage users and their bank accounts. It is completely based on the Django Admin. It implements the following customisations:
 - Google+ authentication.
 - Custom Forms (IBAN is validated by using the third party package validators).
 - Custom List View. Displays users attributes and their bank account IBAN.
@@ -34,7 +34,7 @@ It is now available on localhost:8000. Do not use 127.0.0.1:8000 as it has troub
 ```bash
 sudo docker-compose down
 ```
-So far, we have a superuser to manage all the ins and outs of the app. The rest of users logged via Google+ does not have any permissions.
+So far, we have a superuser to manage all the ins and outs of the app. The rest of users logged via Google+ do not have any permissions.
 
 ### Administrators Configuration
 
